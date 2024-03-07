@@ -1,0 +1,300 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+
+  <title>
+    ZAPATO
+  </title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+</head>
+<style>
+ body{
+  overflow-x: hidden;
+ }
+ body::-webkit-scrollbar{
+  display: none;
+ }
+
+
+.search-toggle {
+    width: auto;
+  
+    display: table;
+}
+.search-toggle input[type=text] {
+    position: relative;
+    padding: 15px 30px 15px 17px;
+    width: 48px;
+    height: 48px;
+    color: #333;
+    font-size: 17px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    transition: 0.5s ease;
+    
+}
+.search-toggle input[type=text]:hover {
+    width: 150px;
+}
+.search-toggle input[type=text]:focus {
+	width: 300px;
+}
+.search-toggle i {
+    position: relative;
+    left: -33px;
+    top: 3px;
+    font-size: 20px;
+    color: #333;
+}
+
+#img12{
+    width: 193px;
+    /* height:145px; */
+    max-height: 250px;
+    transition: transform 250ms;
+  }
+  
+#img12:hover {
+    /* transform: translateY(-10px); */
+    transform: scale(1.4);
+  }
+#img12 img{
+    transition: transform 0.5s ease;
+}
+
+h6{
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+</style>
+
+<body>
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <nav class="navbar navbar-expand-lg custom_nav-container ">
+        <a class="navbar-brand" href="index.html">
+          <span>
+            ZAPATO
+          </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class=""></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav  ">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'Zapatoapp:index' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Zapatoapp:productpage' %}">
+                Products
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="orders">
+                why us
+              </a>
+            </li> -->
+            <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" href="{% url 'payment:orders' %}">
+                Orders
+              </a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact Us</a>
+            </li>
+          </ul>
+          <div class="user_option">
+            {% if user.is_authenticated %}
+            <p style=" margin-top: 15px; margin-right: 5px;">Welcome, {{user.first_name}}!</p>
+            <a href="logout">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              <span>
+                Logout
+              </span>
+            </a>
+            {% else %}
+            <!-- <p>Please log in.</p> -->
+            <a href="{% url 'Zapatoapp:register' %}">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              <span>
+                Login/Register
+              </span>
+            </a>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <a href="{% url 'cartapp:cart_detail' %}">
+              <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+            <form action="{% url 'Zapatoapp:search' %}" method="get">
+              {% csrf_token %}
+              <div class="search-toggle">
+                <input type="text" name="keyword" placeholder="Search....">
+                <i class="fa fa-search"></i>
+              </div>
+            </form>
+          
+          
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="shop_section layout_padding">
+        <div class="container">
+          <div class="heading_container heading_center">
+            <h2>
+              Latest Products
+            </h2>
+          </div>
+          <div class="row1" style="display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-left: -100px;">
+          {% for i in data %}
+          <div class="row" >
+            <div class="" style="padding: 30px; ">
+              <div class="box">
+                <a href="productdetails?idn={{i.id}}" style="width: 200px; height: 200px;">
+                  <div class="img-box">
+                    <img src="{{i.product_image.url}}" alt="" id="img12">
+                  </div>
+                  <div class="detail-box">
+                    <h6>
+                      {{i.product_name}}
+                    </h6>
+                    <h6 style="text-align:right;">
+                      Price
+                      <span>
+                        ₹{{i.product_price}}
+                      </span>
+                    </h6>
+                  </div>
+                  <div class="new">
+                    <span>
+                      New
+                    </span>
+                  </div>
+                </a>
+              </div>
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+        </div>
+    </section>
+  </div>
+  <section class="info_section  layout_padding2-top" id="contact">
+    <div class="social_container">
+      <div class="social_box">
+        <a href="">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        <a href="">
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a href="">
+          <i class="fa fa-youtube" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+    <div class="info_container ">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-3">
+            <h6>
+              ABOUT US
+            </h6>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet,
+            </p>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="info_form ">
+              <h5>
+                Newsletter
+              </h5>
+              <form action="#">
+                <input type="email" placeholder="Enter your email">
+                <button>
+                  Subscribe
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <h6>
+              NEED HELP
+            </h6>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet,
+            </p>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <h6>
+              CONTACT US
+            </h6>
+            <div class="info_link-box">
+              <a href="">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span> Gb road 123 london Uk </span>
+              </a>
+              <a href="">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <span>+01 12345678901</span>
+              </a>
+              <a href="">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span> demo@gmail.com</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- footer section -->
+    <footer class=" footer_section">
+      <div class="container">
+        <!-- <p>
+          &copy; <span id="displayYear"></span> All Rights Reserved By
+          <a href="https://html.design/">Free Html Templates</a>
+        </p> -->
+      </div>
+    </footer>
+    <!-- footer section -->
+
+  </section>
+
+</body>
+</html>

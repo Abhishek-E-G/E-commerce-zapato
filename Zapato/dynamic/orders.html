@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+  body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+}
+
+.text-center {
+  text-align: center;
+  color: #fff;
+  background-color: #f89cab;
+  padding: 1rem;
+}
+
+.container {
+  margin-top: 2rem;
+}
+
+.card {
+  width: 20rem;
+  margin-bottom: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.card-header {
+  background-color: #f89cab;
+  color: #fff;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.list-group-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.empty-message {
+  color: #000;
+  text-align: center;
+}
+</style>
+<body>
+
+  <h3 class="text-center">Orders</h3>
+  <div class="container orders-main" style="display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;">
+  
+    {% if data %}
+      {% for i in data %}
+        <div class="card">
+          <div class="card-header">
+            <strong>Name:</strong> {{i.user}}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Products:</strong> {{i.products}}</li>
+            <li class="list-group-item"><strong>Amount:</strong> {{i.amount}}</li>
+            <li class="list-group-item"><strong>Payment Method:</strong> {{i.pay_method}}</li>
+            <li class="list-group-item"><strong>Address:</strong> {{i.address}}</li>
+            <li class="list-group-item"><strong>Pin:</strong> {{i.Pin}}</li>
+            <li class="list-group-item"><strong>Mobile:</strong> {{i.mobile}}</li>
+            <li class="list-group-item"><strong>Order ID:</strong> {{i.order_id}}</li>
+            <li class="list-group-item"><strong>Order Date:</strong> {{i.o_date}}</li>
+            <li class="list-group-item"><strong>Delivery:</strong> {{i.d_date}}</li>
+          </ul>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h3 class="empty-message">----- Empty -----</h3>
+    {% endif %}
+  </div>
+
+</body>
+</html>

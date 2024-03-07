@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="card">
+        <div class="row">
+            <div class="col-md-8 cart">
+                <div class="title">
+                    <div class="row">
+                        <div class="col"><h4><b>Shopping Cart</b></h4></div>
+                        <!-- <div class="col align-self-center text-right text-muted">3 items</div> -->
+                    </div>
+                </div> 
+                {% if not cart_items %}   
+                <h1>Your cart is empty</h1>
+                <p>Please click <a href="/">here</a> to add products</p>
+                {% else %}
+                {% for cart_item in cart_items %}
+                <div class="row border-top border-bottom">
+                    <div class="row main align-items-center">
+                        
+                        <div class="col-2"><a href="{{ cart_item.product.get_url }}"><img class="img-fluid" src="{{cart_item.product.product_image.url}}"></a></div>
+                        <div class="col">
+                            <div class="row text-muted">{{cart_item.product.product_name}}</div>
+                            <div class="row">₹{{cart_item.product.product_price}}</div>
+                            Qty : {{cart_item.quantity}} * ₹ {{cart_item.product.product_price}}
+                                Size: {{cart_item.selected_size}}
+
+                        </div>
+                        {% if cart_item.quantity < cart_item.product.stock %}
+                        <div class="col">
+                            <!-- <a href="{% url 'cartapp:cart_remove' cart_item.product.id %}">-</a><a href="#" class="border">1</a><a href="{% url 'cartapp:add_cart' cart_item.product.id %}">+</a> -->
+                            <a href="{% url 'cartapp:add_cart' cart_item.product.id %}"  class="custom_a" > <i class="fa fa-plus custom_icon"></i></a>
+                            &nbsp;<a href="{% url 'cartapp:cart_remove' cart_item.product.id %}" class="custom_a"> <i class="fa fa-minus custom_icon" > </i> </a>
+                            &nbsp;<a href="{% url 'cartapp:full_remove' cart_item.product.id %}" class="custom_a"> <i class="fa fa-trash custom_icon"> </i></a>
+
+                        </div>
+                        {% else %}
+                        &nbsp;<a href="{% url 'cartapp:cart_remove' cart_item.product.id %}" class="custom_a"> <i class="fa fa-minus custom_icon" > </i> </a>
+                        &nbsp;<a href="{% url 'cartapp:full_remove' cart_item.product.id %}" class="custom_a"> <i class="fa fa-trash"> </i></a>
+
+                        <div class="col">Total: ${{cart_item.sub_total}}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                <!-- <div class="row">
+                    <div class="row main align-items-center">
+                        <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/ba3tvGm.jpg"></div>
+                        <div class="col">
+                            <div class="row text-muted">Shirt</div>
+                            <div class="row">Cotton T-shirt</div>
+                        </div>
+                        <div class="col">
+                            <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
+                        </div>
+                        <div class="col">&euro; 44.00 <span class="close">&#10005;</span></div>
+                    </div>
+                </div>
+                <div class="row border-top border-bottom">
+                    <div class="row main align-items-center">
+                        <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/pHQ3xT3.jpg"></div>
+                        <div class="col">
+                            <div class="row text-muted">Shirt</div>
+                            <div class="row">Cotton T-shirt</div>
+                        </div>
+                        <div class="col">
+                            <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
+                        </div>
+                        <div class="col">&euro; 44.00 <span class="close">&#10005;</span></div>
+                    </div>
+                </div> -->
+                <div class="back-to-shop"><a href="/">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
+            </div>
+            <!-- <div class="col-md-4 summary">
+                <div><h5><b>Summary</b></h5></div>
+                <hr>
+                <div class="row">
+                    <div class="col" style="padding-left:0;">ITEMS 3</div>
+                    <div class="col text-right">&euro; 132.00</div>
+                </div>
+                <form>
+                    <p>SHIPPING</p>
+                    <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
+                    <p>GIVE CODE</p>
+                    <input id="code" placeholder="Enter your code">
+                </form>
+                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                    <div class="col">TOTAL PRICE</div>
+                    <div class="col text-right">&euro; 137.00</div>
+                </div>
+                <button class="btn">CHECKOUT</button>
+            </div> -->
+        </div>
+        
+    </div>
+    
+</body>
+</html>

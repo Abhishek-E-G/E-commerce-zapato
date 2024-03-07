@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .pay {
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 65rem;
+            margin: 2rem auto;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #f89cab;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .section {
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .form-section {
+            width: 50%;
+        }
+
+        .form-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .form-section input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .payment-options {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .payment-options label {
+            background-color:#f89cab;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .payment-options label:hover {
+            background-color: #eb1d40;
+        }
+
+        .payment-options input {
+            display: none;
+        }
+
+        .article {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .article.on {
+            display: block;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            width: 48%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .btn-success {
+            background-color: #ed052b;
+        }
+
+        .btn-back {
+            background-color: #f89cab;
+        }
+
+        .alink {
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="pay">
+        <div class="header">
+            <h4>Secure Checkout</h4>
+        </div>
+        <div class="section">
+            <div class="form-section">
+                <form action="{% url 'payment:success' %}" method="post">
+                    {% csrf_token %}
+                    <label for="address">Address</label>
+                    <input type="text"  id="" name="path" value="{{path}}" hidden>
+
+                    <input type="text" id="address" name="addr" placeholder="Enter your address">
+                    <label for="contact">Contact</label>
+                    <input type="number" id="contact" name="mob" placeholder="9874563210">
+                    <label for="pin">PIN</label>
+                    <input type="number" id="pin" name="pn" placeholder="632541">
+            </div>
+            <div class="payment-options">
+                <label for="tab1">Cards</label>
+                <label for="tab2">UPI</label>
+                <label for="tab3">Cash on Delivery</label>
+                <input type="radio" id="tab1" name="tab" checked value="card">
+                <input type="radio" id="tab2" name="tab" value="UPI">
+                <input type="radio" id="tab3" name="tab" value="cash_on_delivery">
+            </div>
+        </div>
+
+        <div class="article" id="cardDetails">
+            <div class="d-flex flex-column">
+                <p class="text mb-1">Name</p>
+                <input class="form-control mb-3 inputfld" type="text" placeholder="" value="">
+            </div> 
+            <div class="d-flex flex-column">
+                <p class="text mb-1">Card Number</p>
+                <input class="form-control mb-3 inputfld" type="text" placeholder="1234 5678 435678" value="">
+            </div>
+            <div class="d-flex flex-column">
+                <p class="text mb-1">Expiry date</p>
+                <input class="form-control mb-3 inputfld" type="text" placeholder="MM/YYYY" value="">
+            </div>
+            <div class="d-flex flex-column">
+                <p class="text mb-1">CVV/CVC</p>
+                <input class="form-control mb-3 inputfld" type="text" placeholder="********" value="">
+            </div>
+        </div>
+
+        <div class="article" id="upiDetails">
+            <div class="d-flex flex-column">
+                <p class="text mb-1">UPI ID</p>
+                <input class="form-control mb-3 inputfld" type="text" placeholder="" value="">
+            </div>
+        </div>
+
+        <div class="article" id="cashDetails">
+            <!-- Cash on delivery details, if any -->
+        </div>
+
+        <div class="btn-container">
+            <button type="submit" class="btn btn-success">Pay</button>
+            <button type="submit" class="btn btn-back"><a href="{% url 'cartapp:cart_detail' %}" class="alink">Back to Cart</a></button>
+        </div>
+        </form>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script>
+        $('[name=tab]').each(function(i,d){
+            var p = $(this).prop('checked');
+            if(p){
+                $('.article').eq(i).addClass('on');
+            }    
+        });  
+
+        $('[name=tab]').on('change', function(){
+            var p = $(this).prop('checked');
+            var i = $('[name=tab]').index(this);
+            $('.article').removeClass('on');
+            $('.article').eq(i).addClass('on');
+        });
+    </script>
+</body>
+</html>
